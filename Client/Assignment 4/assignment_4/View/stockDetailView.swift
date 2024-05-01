@@ -14,10 +14,11 @@ struct stockDetailView: View {
     @StateObject private var stockDetailVM: StockDetailViewModel
     @State private var toastMessage = ""
     @State private var showToast = false
-    
+   
     init(stockTicker: String) {
         self.stockTicker = stockTicker
         _stockDetailVM = StateObject(wrappedValue: StockDetailViewModel(tickerSymbol: stockTicker))
+        
     }
     
     var body: some View {
@@ -52,18 +53,51 @@ struct stockDetailView: View {
         .navigationTitle(stockTicker)
         .toolbar{
             ToolbarItem(placement: ToolbarItemPlacement.topBarTrailing){
-                Image(systemName: "plus")
+                Button(action: {
+                    updateWatchlist()
+                }) {
+                    if stockDetailVM.stockDetailData.watchlistFlag {
+                        Image(systemName: "plus")
+                                                .foregroundColor(.white)
+                                                .padding(4)
+                                                .background(Circle().fill(Color.blue))
+                    }else{
+                        Image(systemName: "plus")
+                            .foregroundColor(.blue)  // Set the color of the plus symbol
+                            .font(.system(size: 10)) // Set the size of the plus symbol
+                            .padding(6)  // Adjust padding to control the space around the icon inside the circle
+                            .background(
+                                Circle()  // Create a circle around the icon
+                                    .stroke(Color.blue, lineWidth: 2)  // Only outline the circle with blue color
+                                    .background(Circle().fill(Color.white))  // Fill the circle with white
+                            )
+                    }
+                    
+                }
             }
         }
+        .toast(isPresenting: $showToast, alert: {
+            // Configure the toast appearance and position
+            AlertToast(displayMode: .hud, type: .regular, title: toastMessage, custom: )
+            
+        })
+    
 //       .navigationBarTitleDisplayMode(.large)
 //        .navigationBarItems(trailing: Image(systemName: "plus")
 //            .foregroundColor(.white)
 //            .padding(4)
 //            .background(Circle().fill(Color.blue)))
     }
-    func deleteFavorites(stockTicker: String) {
+    
+    func updateWatchlist() {
+        print("hello")
         var urlComponents = URLComponents()
-        let params: [URLQueryItem] = [URLQueryItem(name: "tickerSymbol", value: stockTicker), URLQueryItem(name: "isStar", value: "true")]
+        let params: [URLQueryItem]
+        if stockDetailVM.stockDetailData.watchlistFlag{
+            params = [URLQueryItem(name: "ticker", value: stockTicker), URLQueryItem(name: "isStar", value: "false")]
+        }else{
+            params = [URLQueryItem(name: "ticker", value: stockTicker), URLQueryItem(name: "isStar", value: "true")]
+        }
         
         urlComponents.path = "/api/setWatchlist"
         urlComponents.queryItems = params
@@ -73,13 +107,21 @@ struct stockDetailView: View {
         APIService.instance.callInternalGetAPI(endpoint: endpoint, completion: {
             data in
             if data != nil {
-                
+                guard let res: ErrorMessage = data?.parseTo() else { print("No Data"); return }
+                self.toastMessage = res.message
+                self.showToast.toggle()
+                if stockDetailVM.stockDetailData.watchlistFlag{
+                    stockDetailVM.stockDetailData.watchlistFlag = false
+                }else{
+                    stockDetailVM.stockDetailData.watchlistFlag = true
+                }
                 print("Success")
             } else {
                 print("Failure")
             }
         })
     }
+    
 }
 
 struct stockDetailInsightsView: View {

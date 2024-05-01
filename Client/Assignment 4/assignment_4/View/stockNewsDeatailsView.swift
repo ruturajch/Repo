@@ -96,18 +96,14 @@ struct stockNewsDeatailsView: View {
                         Link("here", destination: URL(string: selectedNews.url)!)
                         
                     }
-                    
-                    Spacer()
                     HStack {
-                        Link(destination: URL(string: "https://www.facebook.com/sharer/sharer.php?u=\(selectedNews.url)")!) {
-                            Image("fb")
+                        Link(destination: URL(string: "https://twitter.com/intent/post?text=\(selectedNews.headline)&url=\(selectedNews.url)")!) {
+                            Image("twit")
                                 .resizable()
                                 .frame(width: 30, height: 30)
                         }
-
-                        Spacer()
-                        Link(destination: URL(string: "https://twitter.com/intent/post?text=\(selectedNews.headline)&url=\(selectedNews.url)")!) {
-                            Image("twit")
+                        Link(destination: URL(string: "https://www.facebook.com/sharer/sharer.php?u=\(selectedNews.url)")!) {
+                            Image("fb")
                                 .resizable()
                                 .frame(width: 30, height: 30)
                         }

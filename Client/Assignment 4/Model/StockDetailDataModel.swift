@@ -15,6 +15,7 @@ struct StockDetailDataModel: Codable, Hashable {
     var insightsData: insightsData
     var newsData: [newsData]
     var currentPortFolioData: GetCurrentPortFolioData
+    var watchlistFlag: Bool
 }
 
 struct newsData: Codable, Hashable {
@@ -141,4 +142,7 @@ struct GetCompanyInsightsData: Codable, Hashable{
     var totalChange: Double
     var positiveChange: Double
     var negativeChange: Double
+}
+struct ErrorMessage: Codable, Hashable {
+    let message: String
 }

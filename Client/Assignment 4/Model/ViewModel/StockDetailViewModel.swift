@@ -52,7 +52,8 @@ class StockDetailViewModel: ObservableObject {
             currentPrice: 0,
             currentQuantity: 0,
             totalSpend: 0
-        )
+        ),
+        watchlistFlag: false
     )
     
     @Published var firstNewsArticle: newsData = newsData(
@@ -143,6 +144,19 @@ class StockDetailViewModel: ObservableObject {
                 
             }
             
+        })
+        endpoint = "/api/getWatchlistIspresentData?ticker="+tickerSymbol
+        print(endpoint)
+        APIService.instance.callInternalGetAPI(endpoint: endpoint, completion: { data in
+            if data != nil{
+                guard let res: ErrorMessage = data?.parseTo() else { print("No Data"); return }
+                print(res.message)
+                if(res.message == "true"){
+                    self.stockDetailData.watchlistFlag = true
+                }else{
+                    self.stockDetailData.watchlistFlag = false
+                }
+            }
         })
     }
 }
