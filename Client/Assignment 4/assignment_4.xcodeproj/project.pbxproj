@@ -17,6 +17,8 @@
 		89899B092BE0CEA500F29D28 /* download.png in Resources */ = {isa = PBXBuildFile; fileRef = 89899B082BE0CEA500F29D28 /* download.png */; };
 		89899B0B2BE0D02900F29D28 /* twitter.svg in Resources */ = {isa = PBXBuildFile; fileRef = 89899B0A2BE0D02900F29D28 /* twitter.svg */; };
 		89899B0D2BE0DED300F29D28 /* twit.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 89899B0C2BE0DED300F29D28 /* twit.jpeg */; };
+		89899B0F2BE1FECE00F29D28 /* TradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89899B0E2BE1FECE00F29D28 /* TradeView.swift */; };
+		89899B112BE22FDA00F29D28 /* CurrentPortfolioModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89899B102BE22FDA00F29D28 /* CurrentPortfolioModel.swift */; };
 		89B9ACCE2BDD007E00677B49 /* Modals in Frameworks */ = {isa = PBXBuildFile; productRef = 89B9ACCD2BDD007E00677B49 /* Modals */; };
 		89B9ACD12BDF3CEE00677B49 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 89B9ACD02BDF3CEE00677B49 /* AlertToast */; };
 		89B9ACD32BE0275600677B49 /* chartTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B9ACD22BE0275600677B49 /* chartTab.swift */; };
@@ -46,6 +48,8 @@
 		89899B082BE0CEA500F29D28 /* download.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = download.png; sourceTree = "<group>"; };
 		89899B0A2BE0D02900F29D28 /* twitter.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = twitter.svg; sourceTree = "<group>"; };
 		89899B0C2BE0DED300F29D28 /* twit.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = twit.jpeg; sourceTree = "<group>"; };
+		89899B0E2BE1FECE00F29D28 /* TradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeView.swift; sourceTree = "<group>"; };
+		89899B102BE22FDA00F29D28 /* CurrentPortfolioModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPortfolioModel.swift; sourceTree = "<group>"; };
 		89B9ACD22BE0275600677B49 /* chartTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chartTab.swift; sourceTree = "<group>"; };
 		89B9ACD42BE027EB00677B49 /* StockHourlyPriceVariationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockHourlyPriceVariationView.swift; sourceTree = "<group>"; };
 		89B9ACD62BE02B2E00677B49 /* StockHistoricalOHLCVolumeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockHistoricalOHLCVolumeChartView.swift; sourceTree = "<group>"; };
@@ -127,6 +131,7 @@
 				89B9ACD42BE027EB00677B49 /* StockHourlyPriceVariationView.swift */,
 				89B9ACD62BE02B2E00677B49 /* StockHistoricalOHLCVolumeChartView.swift */,
 				89899B022BE08A0100F29D28 /* stockNewsDeatailsView.swift */,
+				89899B0E2BE1FECE00F29D28 /* TradeView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -200,6 +205,7 @@
 			children = (
 				AA71FE122BCA2103006232CB /* HomeDataModelView.swift */,
 				AA71FE1C2BD47FA7006232CB /* StockDetailViewModel.swift */,
+				89899B102BE22FDA00F29D28 /* CurrentPortfolioModel.swift */,
 			);
 			name = ViewModel;
 			path = ../Model/ViewModel;
@@ -336,11 +342,13 @@
 				AA71FE132BCA2103006232CB /* HomeDataModelView.swift in Sources */,
 				0E3603F02AF8A3AB0017EAF4 /* assignment_4App.swift in Sources */,
 				AA71FE0A2BCA1BA6006232CB /* APIService.swift in Sources */,
+				89899B0F2BE1FECE00F29D28 /* TradeView.swift in Sources */,
 				AA71FE192BD091D3006232CB /* tickerSuggestions.swift in Sources */,
 				89B9ACD72BE02B2E00677B49 /* StockHistoricalOHLCVolumeChartView.swift in Sources */,
 				89899B032BE08A0100F29D28 /* stockNewsDeatailsView.swift in Sources */,
 				AA71FE1B2BD31C17006232CB /* StockDetailDataModel.swift in Sources */,
 				89B9ACD32BE0275600677B49 /* chartTab.swift in Sources */,
+				89899B112BE22FDA00F29D28 /* CurrentPortfolioModel.swift in Sources */,
 				AA71FE0D2BCA1C42006232CB /* Constants.swift in Sources */,
 				AA71FE1D2BD47FA7006232CB /* StockDetailViewModel.swift in Sources */,
 				AA71FE172BCDFBE1006232CB /* Debouncer.swift in Sources */,

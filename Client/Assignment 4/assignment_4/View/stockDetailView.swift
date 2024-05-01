@@ -18,7 +18,6 @@ struct stockDetailView: View {
     init(stockTicker: String) {
         self.stockTicker = stockTicker
         _stockDetailVM = StateObject(wrappedValue: StockDetailViewModel(tickerSymbol: stockTicker))
-        
     }
     
     var body: some View {
@@ -32,7 +31,7 @@ struct stockDetailView: View {
                         ChartTabView()
                     }
                     Section(){
-                        stockDetailPortfolioView(stockDetailVM: stockDetailVM, stockTicker: stockTicker)
+                        TradeView(stockDetailVM: stockDetailVM, stockTicker: stockTicker)
                     }.listRowSeparator(.hidden)
                     Section(){
                         stockDetailStatsView(stockDetailVM: stockDetailVM)
@@ -77,9 +76,7 @@ struct stockDetailView: View {
             }
         }
         .toast(isPresenting: $showToast, alert: {
-            // Configure the toast appearance and position
-            AlertToast(displayMode: .hud, type: .regular, title: toastMessage, custom: )
-            
+            AlertToast(displayMode: .hud, type: .regular, title: toastMessage)
         })
     
 //       .navigationBarTitleDisplayMode(.large)
@@ -272,188 +269,7 @@ struct EmptyView: View {
     }
 }
 
-struct stockDetailPortfolioView: View {
-    @ObservedObject var stockDetailVM: StockDetailViewModel
-    var stockTicker: String
-    @State var presented: Bool = false
-    @State private var userInput: String = ""
-    @State private var totalValue: String = "0"
-    @State private var Value: Double = 0
-    @State private var totalValueText: String = "0"
-    @State private var showSuccessModal: Bool = false
-    @State private var successModalMessage: String = ""
-    @State private var showToast = false
-    @State private var toastMessage = ""
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Text("Portfolio")
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                Spacer()
-            }
-            Spacer()
-            Spacer()
-            HStack {
-                VStack(alignment: .leading) {
-                    if stockDetailVM.stockDetailData.portFolioData.stockBroughtFlag{
-                        Text("Shares Owned: ").bold() + Text("\(stockDetailVM.stockDetailData.portFolioData.stocksOwnedQuantity)")
-                        Spacer()
-                        Text("Avg. Cost/Share: ").bold() + Text("$\(stockDetailVM.stockDetailData.portFolioData.AvgCostPerShare)")
-                        Spacer()
-                        Text("Total Cost: ").bold() + Text("$\(stockDetailVM.stockDetailData.portFolioData.TotalCost)")
-                        Spacer()
-                        Text("Change: ").bold() + Text("$\(stockDetailVM.stockDetailData.portFolioData.Change)")
-                        Spacer()
-                        Text("Market Value: ").bold() + Text("$\(stockDetailVM.stockDetailData.portFolioData.MarketValue)")
-                    } else {
-                        Text("You have 0 shares of "+stockTicker+".\nStart trading!")
-                    }
-                }
-                Spacer()
-                VStack(alignment: .trailing) {
-                    Button(action: {
-                        self.presented.toggle()
-                    }) {
-                        Text("Trade")
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(height: 44)
-                            .background(RoundedRectangle(cornerRadius: 22).fill(Color.green))
-                    }
-    
-                    .modal(isPresented: self.$presented){
-                        VStack{
-                            if showSuccessModal{
-                                VStack {
-                                    Text("Congratulations!")
-                                        .font(.largeTitle)
-                                        .fontWeight(.semibold)
-                                    Text("\(successModalMessage)")
-                                    Spacer()
-                                    Button(action: {
-                                        self.presented.toggle()
-                                    }) {
-                                        Text("Done")
-                                            .fontWeight(.semibold)
-                                            .foregroundColor(.white)
-                                            .padding()
-                                            .frame(height: 44)
-                                            .background(RoundedRectangle(cornerRadius: 22).fill(Color.green))
-                                    }
-                                    .buttonStyle(PlainButtonStyle())
-                                }
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.green.opacity(0.3))
-                            }
-                            
-                            else{
-                                VStack(alignment: .trailing){
-                                    Spacer()
-                                    Text("Trade " + stockDetailVM.stockDetailData.insightsData.companyName + " shares")
-                                    Spacer()
-                                    HStack{
-                                        TextField("0", text: $userInput)
-                                            .keyboardType(.decimalPad)
-                                        VStack
-                                        {
-                                            Text("Share")
-                                            Text("x $\(stockDetailVM.stockDetailData.portFolioData.MarketValue)/share = $\(userInput)")
-                                        }
-                                    }
-                                    Spacer()
-                                    Text("$ available to buy " + stockTicker)
-                                    HStack{
-                                        Button(action: {
-                                            buyStocks(stockName: stockTicker, quantity: userInput, isBuy: "true")
-                                        }) {
-                                            Text("Buy")
-                                                .fontWeight(.semibold)
-                                                .foregroundColor(.white)
-                                                .padding()
-                                                .frame(height: 44)
-                                                .background(RoundedRectangle(cornerRadius: 22).fill(Color.green))
-                                        }
-                                        .buttonStyle(PlainButtonStyle())
-                                        Button(action: {
-                                            buyStocks(stockName: stockTicker, quantity: userInput, isBuy: "false")
-                                        }) {
-                                            Text("Sell")
-                                                .fontWeight(.semibold)
-                                                .foregroundColor(.white)
-                                                .padding()
-                                                .frame(height: 44)
-                                                .background(RoundedRectangle(cornerRadius: 22).fill(Color.green))
-                                        }
-                                        .buttonStyle(PlainButtonStyle())
-                                    }
-                                    .toast(isPresenting: $showToast){
-                                        AlertToast(type: .regular, title: "\(toastMessage)")
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    func buyStocks(stockName: String, quantity: String, isBuy : String) {
-        if let quantityDouble = Double(quantity){
-        }else{
-            self.toastMessage = "Please enter a valid amount"
-            DispatchQueue.main.async {
-                self.showToast.toggle()
-                return
-            }
-        }
-        if(isBuy == "false"){
-            if let quantityDouble = Double(quantity), quantityDouble > stockDetailVM.stockDetailData.currentPortFolioData.currentQuantity {
-                self.toastMessage = "Not enough shares to sell"
-                self.showToast.toggle()
-                return
-            }
-            if let quantityDouble = Double(quantity), quantityDouble <= 0 {
-                self.toastMessage = "Cannot sell non-positive shares"
-                self.showToast.toggle()
-                return
-            }
-        }
-        if(isBuy == "true"){
-            if let quantityDouble = Double(quantity), (quantityDouble * stockDetailVM.stockDetailData.currentPortFolioData.currentPrice)  > (25000 - stockDetailVM.stockDetailData.currentPortFolioData.totalSpend) {
-                self.toastMessage = "Not enough money to buy"
-                self.showToast.toggle()
-                return
-            }
-            if let quantityDouble = Double(quantity), quantityDouble <= 0 {
-                self.toastMessage = "Cannot buy non-positive shares"
-                self.showToast.toggle()
-                return
-            }
-        }
-        
-        
-        var urlComponents = URLComponents()
-        let params: [URLQueryItem] = [URLQueryItem(name: "ticker", value: stockName), URLQueryItem(name: "quantity", value: quantity), URLQueryItem(name: "isBuy", value: isBuy)]
-        
-        urlComponents.path = "/api/addUpdatePortfolio"
-        urlComponents.queryItems = params
-        
-        let endpoint = urlComponents.url!.absoluteString
-        APIService.instance.callInternalGetAPI(endpoint: endpoint, completion: {
-            data in
-            if data != nil {
-                self.presented.toggle()
-                self.showSuccessModal = true
-                print("Success")
-            } else {
-                print("Failure")
-            }
-        })
-        
-    }
-}
+
 
 struct stockDetailInitialView: View {
     @ObservedObject var stockDetailVM: StockDetailViewModel
